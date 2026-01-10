@@ -19,32 +19,32 @@ This project is a full-stack MERN CRUD application designed primarily as a hands
 
 ```shell
 
-{/*Install Kmpose to conver*/}
+#Install Kmpose to conver
 	curl -L https://github.com/kubernetes/kompose/releases/download/v1.31.2/kompose-linux-amd64 -o kompose
 	chmod +x kompose
 	sudo mv kompose /usr/local/bin/
 	
-{/* Refactor your docker.compose file into kubernete Yamls */}
+# Refactor your docker.compose file into kubernete Yamls 
 	kompose convert -f docker-compose.yml
 
-{/*Install MiniKube for Terminal config */}
+#Install MiniKube for Terminal config 
 	curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64
 	chmod +x minikube-linux-amd64
 	sudo install minikube-linux-amd64 /usr/local/bin/minikube
 	minikube version
 	
-{/*Point to Docker Diamon*/}
+# Point to Docker Diamon
 	eval $(minikube docker-env)
 
-{/*Build Docker images*/}
+# Build Docker images
 	docker build -t my-app-api:latest ./backend -f backend/Dockerfile
 	docker build -t my-app-ui:latest ./frontend -f frontend/Dockerfile
 	
 
-{/*Verify the existence of images*/}
+# Verify the existence of images
 	docker images | grep my-app
 
-{/* Map Secrets */}
+# Map Secrets
 	kubectl create secret generic api-secrets --from-env-file=./backend/.env 	
 	
 
