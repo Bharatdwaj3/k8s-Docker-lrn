@@ -1,0 +1,41 @@
+import mongoose, {Schema, model} from "mongoose";
+
+const content_Schema=new Schema({
+    
+userId: { type: mongoose.Schema.Types.ObjectId, ref: 'user', required: true },
+
+    title: {
+        type: String,
+        required: true,
+        trim: true
+    },
+    description:{
+        type:String,
+        required: true,
+        trim: true
+    },
+    category:{
+        type:String,
+        enum: ['fiction','science','art','daily'],
+        trim: true
+    },
+    mediaType:{
+        type:String,
+        enum: ['video','image','audio'],
+        trim: true
+    },
+     author: { 
+        type: mongoose.Schema.Types.ObjectId, 
+        ref: 'user', 
+        required: true 
+    },
+
+    mediaUrl: { type: String, default: '' },
+    cloudinaryId: { type: String, default: '' }
+},{
+    timestamps: true
+    }
+);
+
+
+export default model('contentModel', content_Schema,'content');
