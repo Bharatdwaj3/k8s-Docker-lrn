@@ -17,6 +17,8 @@ This project is a full-stack MERN CRUD application designed primarily as a hands
 
 ## **Snippets**
 
+**_! Note_: The commands are tested on WSL-Ubuntu** 
+
 ```shell
 
 #Install Kmpose to conver
