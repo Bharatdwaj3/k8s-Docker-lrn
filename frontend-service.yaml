@@ -9,7 +9,6 @@ metadata:
     io.kompose.service: frontend
   name: frontend
 spec:
-  type: NodePort
   ports:
     - name: "5173"
       port: 5173

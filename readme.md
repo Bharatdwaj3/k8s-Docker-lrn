@@ -13,7 +13,9 @@ This project is a full-stack MERN CRUD application designed primarily as a hands
 
 ## **Kubernetes Ecosystem used**
 - **Kompose** : To translate docker-compose.yaml to Kubernetes Yaml
-- **MiniCube** :  To Test Kubernetes Local Commands
+- **MiniCube**:  To Test Kubernetes Local Commands
+- **Kind**: To run multi node environments
+- **Helm**: Package Manager
 
 ## **Snippets**
 

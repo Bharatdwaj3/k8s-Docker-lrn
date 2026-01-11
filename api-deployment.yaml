@@ -25,9 +25,8 @@ spec:
         io.kompose.service: api
     spec:
       containers:
-        - image: my-app-api:latest
+        - image: api
           name: api
-          imagePullPolicy: Never
           ports:
             - containerPort: 4000
               hostPort: 4004
