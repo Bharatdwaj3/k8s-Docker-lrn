@@ -1,0 +1,42 @@
+api:
+  api:
+    image:
+      repository: api
+      tag: lastest
+  nodeSelector: {}
+  ports:
+  - name: "4004"
+    port: 4004
+    targetPort: 4000
+  replicas: 1
+  tolerations: []
+  topologySpreadConstraints: []
+  type: ClusterIP
+frontend:
+  frontend:
+    args:
+    - npm
+    - run
+    - dev
+    - --
+    - --host
+    image:
+      repository: frontend
+      tag: lastest
+  nodeSelector: {}
+  ports:
+  - name: "5173"
+    port: 5173
+    targetPort: 5173
+  replicas: 1
+  strategy:
+    type: Recreate
+  tolerations: []
+  topologySpreadConstraints: []
+  type: ClusterIP
+kubernetesClusterDomain: cluster.local
+pvc:
+  claim0:
+    storageRequest: 100Mi
+  claim1:
+    storageRequest: 100Mi

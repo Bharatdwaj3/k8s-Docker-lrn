@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "mern-app-chart.fullname" . }}-api
+  labels:
+    io.kompose.service: api
+  {{- include "mern-app-chart.labels" . | nindent 4 }}
+  annotations:
+    kompose.cmd: kompose convert -f docker-compose.yml
+    kompose.version: 1.31.2 (a92241f79)
+spec:
+  type: {{ .Values.api.type }}
+  selector:
+    io.kompose.service: api
+    {{- include "mern-app-chart.selectorLabels" . | nindent 4 }}
+  ports:
+  {{- .Values.api.ports | toYaml | nindent 2 }}

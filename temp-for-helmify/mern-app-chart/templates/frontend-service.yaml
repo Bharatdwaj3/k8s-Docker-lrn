@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "mern-app-chart.fullname" . }}-frontend
+  labels:
+    io.kompose.service: frontend
+  {{- include "mern-app-chart.labels" . | nindent 4 }}
+  annotations:
+    kompose.cmd: kompose convert -f docker-compose.yml
+    kompose.version: 1.31.2 (a92241f79)
+spec:
+  type: {{ .Values.frontend.type }}
+  selector:
+    io.kompose.service: frontend
+    {{- include "mern-app-chart.selectorLabels" . | nindent 4 }}
+  ports:
+  {{- .Values.frontend.ports | toYaml | nindent 2 }}

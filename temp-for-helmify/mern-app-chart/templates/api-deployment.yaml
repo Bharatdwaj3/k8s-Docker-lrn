@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "mern-app-chart.fullname" . }}-api
+  labels:
+    io.kompose.service: api
+  {{- include "mern-app-chart.labels" . | nindent 4 }}
+  annotations:
+    kompose.cmd: kompose convert -f docker-compose.yml
+    kompose.version: 1.31.2 (a92241f79)
+spec:
+  replicas: {{ .Values.api.replicas }}
+  selector:
+    matchLabels:
+      io.kompose.service: api
+    {{- include "mern-app-chart.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        io.kompose.network/my-app-default: "true"
+        io.kompose.service: api
+      {{- include "mern-app-chart.selectorLabels" . | nindent 8 }}
+      annotations:
+        kompose.cmd: kompose convert -f docker-compose.yml
+        kompose.version: 1.31.2 (a92241f79)
+    spec:
+      containers:
+      - env:
+        - name: KUBERNETES_CLUSTER_DOMAIN
+          value: {{ quote .Values.kubernetesClusterDomain }}
+        image: {{ .Values.api.api.image.repository }}:{{ .Values.api.api.image.tag | default
+          .Chart.AppVersion }}
+        name: api
+        ports:
+        - containerPort: 4000
+          hostPort: 4004
+          protocol: TCP
+        resources: {}
+      nodeSelector: {{- toYaml .Values.api.nodeSelector | nindent 8 }}
+      restartPolicy: Always
+      serviceAccountName: {{ include "mern-app-chart.serviceAccountName" . }}
+      tolerations: {{- toYaml .Values.api.tolerations | nindent 8 }}
+      topologySpreadConstraints: {{- toYaml .Values.api.topologySpreadConstraints | nindent
+        8 }}

@@ -1,0 +1,59 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "mern-app-chart.fullname" . }}-frontend
+  labels:
+    io.kompose.service: frontend
+  {{- include "mern-app-chart.labels" . | nindent 4 }}
+  annotations:
+    kompose.cmd: kompose convert -f docker-compose.yml
+    kompose.version: 1.31.2 (a92241f79)
+spec:
+  replicas: {{ .Values.frontend.replicas }}
+  strategy:
+    type: {{ .Values.frontend.strategy.type | quote }}
+  selector:
+    matchLabels:
+      io.kompose.service: frontend
+    {{- include "mern-app-chart.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        io.kompose.network/my-app-default: "true"
+        io.kompose.service: frontend
+      {{- include "mern-app-chart.selectorLabels" . | nindent 8 }}
+      annotations:
+        kompose.cmd: kompose convert -f docker-compose.yml
+        kompose.version: 1.31.2 (a92241f79)
+    spec:
+      containers:
+      - args: {{- toYaml .Values.frontend.frontend.args | nindent 8 }}
+        env:
+        - name: KUBERNETES_CLUSTER_DOMAIN
+          value: {{ quote .Values.kubernetesClusterDomain }}
+        image: {{ .Values.frontend.frontend.image.repository }}:{{ .Values.frontend.frontend.image.tag
+          | default .Chart.AppVersion }}
+        name: frontend
+        ports:
+        - containerPort: 5173
+          hostPort: 5173
+          protocol: TCP
+        resources: {}
+        volumeMounts:
+        - mountPath: /app
+          name: frontend-claim0
+        - mountPath: /app/node_modules
+          name: frontend-claim1
+      nodeSelector: {{- toYaml .Values.frontend.nodeSelector | nindent 8 }}
+      restartPolicy: Always
+      serviceAccountName: {{ include "mern-app-chart.serviceAccountName" . }}
+      tolerations: {{- toYaml .Values.frontend.tolerations | nindent 8 }}
+      topologySpreadConstraints: {{- toYaml .Values.frontend.topologySpreadConstraints
+        | nindent 8 }}
+      volumes:
+      - name: frontend-claim0
+        persistentVolumeClaim:
+          claimName: {{ include "mern-app-chart.fullname" . }}-claim0
+      - name: frontend-claim1
+        persistentVolumeClaim:
+          claimName: {{ include "mern-app-chart.fullname" . }}-claim1

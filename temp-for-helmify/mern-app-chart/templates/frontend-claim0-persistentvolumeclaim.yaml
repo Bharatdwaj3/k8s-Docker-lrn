@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ include "mern-app-chart.fullname" . }}-claim0
+  labels:
+    io.kompose.service: frontend-claim0
+  {{- include "mern-app-chart.labels" . | nindent 4 }}
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: {{ .Values.pvc.claim0.storageRequest | quote }}
