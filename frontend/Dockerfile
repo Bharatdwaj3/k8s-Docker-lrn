@@ -1,22 +1,20 @@
-# Stage 1: Build the Vite + React app
-FROM node:22-alpine AS builder
+# Use official Node image (includes npm)
+FROM node:20-alpine
 
+# Set working directory
 WORKDIR /app
 
+# Copy package files first (for caching)
 COPY package*.json ./
 
-RUN npm ci
+# Install dependencies
+RUN npm install
 
+# Copy the rest of the app
 COPY . .
 
-RUN npm run build
+# Expose Vite default port
+EXPOSE 5173
 
-
-FROM nginx:alpine
-
-
-COPY --from=builder /app/dist /usr/share/nginx/html
-
-EXPOSE 80
-
-CMD ["nginx", "-g", "daemon off;"]
+# Run dev server (matches your Helm args)
+CMD ["npm", "run", "dev", "--", "--host", "0.0.0.0"]

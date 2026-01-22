@@ -1,28 +1,32 @@
 api:
-  api:
-    image:
-      repository: api
-      tag: lastest
+
+  image:
+    repository: my-app-api
+    tag: latest
+    pullPolicy: Never
+
+
   nodeSelector: {}
   ports:
-  - name: "4004"
-    port: 4004
-    targetPort: 4000
+  - name: "backend-port"
+    port: 5009
+    targetPort: 5009
   replicas: 1
   tolerations: []
   topologySpreadConstraints: []
   type: ClusterIP
+
 frontend:
-  frontend:
-    args:
-    - npm
-    - run
-    - dev
-    - --
-    - --host
-    image:
-      repository: frontend
-      tag: lastest
+  args:
+  - npm
+  - run
+  - dev
+  - --
+  - --host
+  image:
+    repository: my-app-ui
+    tag: latest
+    pullPolicy: Never
   nodeSelector: {}
   ports:
   - name: "5173"
