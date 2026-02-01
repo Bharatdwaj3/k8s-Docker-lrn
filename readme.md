@@ -1,5 +1,3 @@
-# MERN Stack Curd Application
-
 ## **Description**
 <h1 align="center"> The Documentation Architect </h1>
 <p align="center"> Instantly generate professional, comprehensive README.md files for your Kubernetes and Docker-based projects. </p>
